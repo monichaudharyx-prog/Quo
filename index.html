@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interior Quotation Generator | Free Professional Quotes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Interior Quotation Generator - Create professional interior design quotes in 1 click. Free, easy, and professional.">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Interior Quote">
+    
+    <title>Interior Quotation Generator | Professional Quotes in 1 Click</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons for different devices -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    
     <style>
         * {
             margin: 0;
@@ -39,6 +54,31 @@
             color: rgba(255,255,255,0.9);
             font-size: 1.1rem;
             margin-top: 10px;
+        }
+
+        /* Install Button */
+        .install-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .install-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .install-btn:hover {
+            transform: translateY(-2px);
         }
 
         /* Main Grid */
@@ -160,20 +200,11 @@
             font-size: 1.5rem;
         }
 
-        .quotation-header p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
         .client-info {
             background: white;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
-        }
-
-        .client-info p {
-            margin: 5px 0;
         }
 
         table {
@@ -198,11 +229,6 @@
             margin-top: 20px;
             padding-top: 15px;
             border-top: 2px solid #ddd;
-        }
-
-        .total-section p {
-            font-size: 1.2rem;
-            margin: 5px 0;
         }
 
         .grand-total {
@@ -299,19 +325,7 @@
             .card:first-child {
                 display: none;
             }
-            .action-buttons {
-                display: none;
-            }
-            .preset-buttons {
-                display: none;
-            }
-            .add-item-btn {
-                display: none;
-            }
-            .remove-item {
-                display: none;
-            }
-            .item-row .remove-item {
+            .action-buttons, .install-container, .preset-buttons, .add-item-btn {
                 display: none;
             }
         }
@@ -322,6 +336,12 @@
         <div class="header">
             <h1>🏠 Interior Quotation Generator</h1>
             <p>Professional Quotes in 1 Click | Free & Easy to Use</p>
+        </div>
+
+        <div class="install-container" id="installContainer" style="display: none;">
+            <button class="install-btn" id="installBtn">
+                📲 Install App on Your Phone
+            </button>
         </div>
 
         <div class="main-grid">
@@ -363,7 +383,6 @@
                 
                 <h2 style="margin-top: 20px;">🛠️ Work Items & Materials</h2>
                 
-                <!-- Preset Templates -->
                 <div class="preset-buttons">
                     <button class="preset-btn" onclick="loadPreset('basic')">🏠 Basic Package</button>
                     <button class="preset-btn" onclick="loadPreset('premium')">💎 Premium Package</button>
@@ -396,6 +415,24 @@
     </div>
 
     <script>
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installContainer = document.getElementById('installContainer');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installContainer.style.display = 'block';
+            
+            installBtn.addEventListener('click', async () => {
+                installContainer.style.display = 'none';
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            });
+        });
+
         // Items array
         let items = [];
         let itemId = 0;
@@ -476,7 +513,7 @@
             }
         }
         
-        // Render items list in left panel
+        // Render items list
         function renderItemsList() {
             const container = document.getElementById('itemsContainer');
             container.innerHTML = '';
