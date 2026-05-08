@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interior Quotation Generator | Free Professional Quotes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Items List */
+        .items-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .item-row input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .item-row .qty {
+            width: 80px;
+        }
+
+        .item-row .price {
+            width: 120px;
+        }
+
+        .remove-item {
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .add-item-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        /* Quotation Preview */
+        .quotation-preview {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .quotation-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .quotation-header h3 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .quotation-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .client-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .client-info p {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        .total-section {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        .total-section p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .grand-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Preset Templates */
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .preset-btn {
+            background: #e0e0e0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .preset-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .card:first-child {
+                display: none;
+            }
+            .action-buttons {
+                display: none;
+            }
+            .preset-buttons {
+                display: none;
+            }
+            .add-item-btn {
+                display: none;
+            }
+            .remove-item {
+                display: none;
+            }
+            .item-row .remove-item {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Interior Quotation Generator</h1>
+            <p>Professional Quotes in 1 Click | Free & Easy to Use</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Left Side - Input Form -->
+            <div class="card">
+                <h2>📋 Client & Project Details</h2>
+                
+                <div class="form-group">
+                    <label>Client Name</label>
+                    <input type="text" id="clientName" placeholder="Enter client name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Project Type</label>
+                    <select id="projectType">
+                        <option value="Residential">🏠 Residential Interior</option>
+                        <option value="Commercial">🏢 Commercial Interior</option>
+                        <option value="Office">💼 Office Interior</option>
+                        <option value="Kitchen">🍳 Kitchen Design</option>
+                        <option value="Bedroom">🛏️ Bedroom Design</option>
+                        <option value="Living Room">🛋️ Living Room Design</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Address / Project Location</label>
+                    <textarea id="address" rows="2" placeholder="Enter project address"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Client phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Client email">
+                </div>
+                
+                <h2 style="margin-top: 20px;">🛠️ Work Items & Materials</h2>
+                
+                <!-- Preset Templates -->
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset('basic')">🏠 Basic Package</button>
+                    <button class="preset-btn" onclick="loadPreset('premium')">💎 Premium Package</button>
+                    <button class="preset-btn" onclick="loadPreset('kitchen')">🍳 Kitchen Package</button>
+                    <button class="preset-btn" onclick="loadPreset('office')">💼 Office Package</button>
+                </div>
+                
+                <div id="itemsContainer" class="items-list"></div>
+                
+                <button class="add-item-btn" onclick="addItem()">+ Add New Item</button>
+            </div>
+            
+            <!-- Right Side - Quotation Preview -->
+            <div class="card">
+                <h2>📄 Quotation Preview</h2>
+                <div id="quotationPreview"></div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="generateQuotation()">🔄 Generate / Refresh</button>
+                    <button class="btn btn-success" onclick="printQuotation()">🖨️ Print / Save PDF</button>
+                    <button class="btn btn-warning" onclick="downloadQuotation()">📥 Download as Text</button>
+                    <button class="btn btn-danger" onclick="resetForm()">🗑️ Reset All</button>
+                </div>
+                
+                <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #999;">
+                    💡 Click "Generate" to update preview | Click "Print" to save as PDF
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Items array
+        let items = [];
+        let itemId = 0;
+        
+        // Load preset templates
+        function loadPreset(type) {
+            if (type === 'basic') {
+                items = [
+                    { id: itemId++, name: "Painting (Walls & Ceiling)", qty: 1, price: 25000 },
+                    { id: itemId++, name: "Flooring (Tiles/Wooden)", qty: 1, price: 45000 },
+                    { id: itemId++, name: "Basic Furniture Setup", qty: 1, price: 35000 },
+                    { id: itemId++, name: "Lighting & Fans", qty: 1, price: 15000 },
+                    { id: itemId++, name: "Labor Charges", qty: 1, price: 20000 }
+                ];
+            } else if (type === 'premium') {
+                items = [
+                    { id: itemId++, name: "Premium Wallpaper & Texture", qty: 1, price: 45000 },
+                    { id: itemId++, name: "Vitrified Tiles / Marble Flooring", qty: 1, price: 85000 },
+                    { id: itemId++, name: "Modular Kitchen", qty: 1, price: 120000 },
+                    { id: itemId++, name: "Custom Wardrobes", qty: 1, price: 75000 },
+                    { id: itemId++, name: "False Ceiling with Lights", qty: 1, price: 45000 },
+                    { id: itemId++, name: "Premium Furniture", qty: 1, price: 95000 },
+                    { id: itemId++, name: "Home Automation", qty: 1, price: 35000 }
+                ];
+            } else if (type === 'kitchen') {
+                items = [
+                    { id: itemId++, name: "Modular Kitchen Cabinets", qty: 1, price: 85000 },
+                    { id: itemId++, name: "Granite / Quartz Countertop", qty: 1, price: 35000 },
+                    { id: itemId++, name: "Kitchen Chimney", qty: 1, price: 12000 },
+                    { id: itemId++, name: "Gas Stove", qty: 1, price: 8000 },
+                    { id: itemId++, name: "Sink & Taps", qty: 1, price: 6000 },
+                    { id: itemId++, name: "Kitchen Flooring", qty: 1, price: 15000 }
+                ];
+            } else if (type === 'office') {
+                items = [
+                    { id: itemId++, name: "Office Workstations", qty: 4, price: 15000 },
+                    { id: itemId++, name: "Meeting Table", qty: 1, price: 25000 },
+                    { id: itemId++, name: "Office Chairs", qty: 6, price: 5000 },
+                    { id: itemId++, name: "Cabinets & Storage", qty: 2, price: 12000 },
+                    { id: itemId++, name: "Electrical & Networking", qty: 1, price: 20000 },
+                    { id: itemId++, name: "Office Partitions", qty: 1, price: 30000 }
+                ];
+            }
+            renderItemsList();
+            generateQuotation();
+        }
+        
+        // Add new item
+        function addItem() {
+            items.push({
+                id: itemId++,
+                name: "New Item",
+                qty: 1,
+                price: 0
+            });
+            renderItemsList();
+        }
+        
+        // Remove item
+        function removeItem(id) {
+            items = items.filter(item => item.id !== id);
+            renderItemsList();
+            generateQuotation();
+        }
+        
+        // Update item
+        function updateItem(id, field, value) {
+            const item = items.find(i => i.id === id);
+            if (item) {
+                if (field === 'qty') {
+                    item.qty = parseFloat(value) || 0;
+                } else if (field === 'price') {
+                    item.price = parseFloat(value) || 0;
+                } else if (field === 'name') {
+                    item.name = value;
+                }
+                generateQuotation();
+            }
+        }
+        
+        // Render items list in left panel
+        function renderItemsList() {
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <input type="text" value="${item.name}" placeholder="Item name" 
+                        onchange="updateItem(${item.id}, 'name', this.value)" style="flex:2">
+                    <input type="number" value="${item.qty}" placeholder="Qty" class="qty"
+                        onchange="updateItem(${item.id}, 'qty', this.value)">
+                    <input type="number" value="${item.price}" placeholder="Price" class="price"
+                        onchange="updateItem(${item.id}, 'price', this.value)">
+                    <button class="remove-item" onclick="removeItem(${item.id})">✕</button>
+                `;
+                container.appendChild(row);
+            });
+            
+            if (items.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Click "Add Item" to start</p>';
+            }
+        }
+        
+        // Calculate totals
+        function calculateTotals() {
+            let subtotal = 0;
+            items.forEach(item => {
+                subtotal += item.qty * item.price;
+            });
+            const gst = subtotal * 0.18;
+            const total = subtotal + gst;
+            return { subtotal, gst, total };
+        }
+        
+        // Generate Quotation
+        function generateQuotation() {
+            const clientName = document.getElementById('clientName').value || 'Not Specified';
+            const projectType = document.getElementById('projectType').value;
+            const address = document.getElementById('address').value || 'Not Specified';
+            const phone = document.getElementById('phone').value || 'Not Specified';
+            const email = document.getElementById('email').value || 'Not Specified';
+            
+            const { subtotal, gst, total } = calculateTotals();
+            const today = new Date().toLocaleDateString('en-IN');
+            const quotationNo = 'INQ-' + Date.now().toString().slice(-8);
+            
+            let itemsHtml = '';
+            items.forEach(item => {
+                const amount = item.qty * item.price;
+                itemsHtml += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td style="text-align:center">${item.qty}</td>
+                        <td style="text-align:right">₹${item.price.toLocaleString()}</td>
+                        <td style="text-align:right">₹${amount.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+            
+            if (items.length === 0) {
+                itemsHtml = '<tr><td colspan="4" style="text-align:center; padding:30px;">No items added yet. Add items from left panel.</td></tr>';
+            }
+            
+            const html = `
+                <div class="quotation-preview">
+                    <div class="quotation-header">
+                        <h3>🏠 INTERIOR DESIGN QUOTATION</h3>
+                        <p>Quote #: ${quotationNo} | Date: ${today}</p>
+                    </div>
+                    
+                    <div class="client-info">
+                        <p><strong>Client Name:</strong> ${clientName}</p>
+                        <p><strong>Project Type:</strong> ${projectType}</p>
+                        <p><strong>Address:</strong> ${address}</p>
+                        <p><strong>Phone:</strong> ${phone} | <strong>Email:</strong> ${email}</p>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr><th>Item Description</th><th style="width:60px">Qty</th><th style="width:100px">Unit Price</th><th style="width:100px">Amount</th></tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+                    
+                    <div class="total-section">
+                        <p>Subtotal: <strong>₹${subtotal.toLocaleString()}</strong></p>
+                        <p>GST (18%): <strong>₹${gst.toLocaleString()}</strong></p>
+                        <p class="grand-total">Grand Total: ₹${total.toLocaleString()}</p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 12px; text-align: center; color: #666;">
+                        <p>Terms & Conditions:</p>
+                        <p>1. Payment: 50% advance, 50% on completion</p>
+                        <p>2. Delivery timeline: 15-20 working days</p>
+                        <p>3. Warranty: 1 year on workmanship</p>
+                        <p>4. This is a computer generated quotation</p>
+                        <p>Thank you for choosing us! 😊</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('quotationPreview').innerHTML = html;
+        }
+        
+        // Print Quotation
+        function printQuotation() {
+            generateQuotation();
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+        
+        // Download as Text
+        function downloadQuotation() {
+            const clientName = document.getElementById('clientName').value || 'Client';
+            const { subtotal, gst, total } = calculateTotals();
+            const today = new Date().toLocaleDateString();
+            
+            let text = `================ INTERIOR QUOTATION ================\n`;
+            text += `Date: ${today}\n`;
+            text += `Client: ${clientName}\n`;
+            text += `==================================================\n\n`;
+            text += `ITEMS:\n`;
+            
+            items.forEach(item => {
+                const amount = item.qty * item.price;
+                text += `- ${item.name} | Qty: ${item.qty} | ₹${item.price} | Amount: ₹${amount}\n`;
+            });
+            
+            text += `\n==================================================\n`;
+            text += `Subtotal: ₹${subtotal.toLocaleString()}\n`;
+            text += `GST (18%): ₹${gst.toLocaleString()}\n`;
+            text += `GRAND TOTAL: ₹${total.toLocaleString()}\n`;
+            text += `==================================================\n`;
+            
+            const blob = new Blob([text], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Quotation_${clientName}_${today}.txt`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+        
+        // Reset form
+        function resetForm() {
+            document.getElementById('clientName').value = '';
+            document.getElementById('projectType').value = 'Residential';
+            document.getElementById('address').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('email').value = '';
+            items = [];
+            itemId = 0;
+            renderItemsList();
+            generateQuotation();
+        }
+        
+        // Auto generate on input change
+        document.querySelectorAll('#clientName, #projectType, #address, #phone, #email').forEach(input => {
+            input.addEventListener('input', () => generateQuotation());
+        });
+        
+        // Initial load
+        loadPreset('basic');
+    </script>
+</body>
+</html>
